@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <svgTextStroke class="wf-noto" msg="時間差で徐々に表示するサンプルです。" font-size="30" delay="0.04"/>
+    <hr>
     <svgTextStroke class="wf-noto" msg="日常的に使うための飽きのこない、それでいてちょっと気になるデザイン。" font-size="30"/>
     <hr>
     <svgTextStroke class="wf-hannari" msg="あかるく、やさしく、ふんわり。" font-size="30" stroke-color="#f0f"/>
@@ -10,7 +12,9 @@
     <hr>
     <svgTextStroke class="wf-nicomoji" msg="いらっしゃいませ" font-size="40" letter-spacing="1.5"/>
     <hr>
-    <svgTextStroke msg="メロスは激怒した。<br>必ず、かの邪智暴虐（じゃちぼうぎゃく）の王を除かなければならぬと決意した。<br>メロスには政治がわからぬ。<br>メロスは、村の牧人である。<br>笛を吹き、羊と遊んで暮して来た。<br>けれども邪悪に対しては、人一倍に敏感であった。" font-size="20" line-height="1.5"/>
+    <svgTextStroke msg="メロスは激怒した。<br>必ず、かの邪智暴虐（じゃちぼうぎゃく）の王を除かなければならぬと決意した。<br>メロスには政治がわからぬ。<br>メロスは、村の牧人である。<br>笛を吹き、羊と遊んで暮して来た。<br>けれども邪悪に対しては、人一倍に敏感であった。" font-size="14" line-height="1.5"/>
+    <hr>
+    <svgTextStroke msg="メロスは激怒した。<br>必ず、かの邪智暴虐（じゃちぼうぎゃく）の王を除かなければならぬと決意した。<br>メロスには政治がわからぬ。<br>メロスは、村の牧人である。<br>笛を吹き、羊と遊んで暮して来た。<br>けれども邪悪に対しては、人一倍に敏感であった。" font-size="20" line-height="1.5" delay="0.04"/>
   </div>
 </template>
 

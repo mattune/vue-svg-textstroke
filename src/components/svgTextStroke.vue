@@ -1,5 +1,5 @@
 <template>
-  <svg class="svgAnimation" xmlns="http://www.w3.org/2000/svg" :style="styles">
+  <svg class="svgAnimation" xmlns="http://www.w3.org/2000/svg">
   </svg>
 </template>
 
@@ -19,7 +19,11 @@ export default {
     },
     dy: {
       type: [String, Number],
-      default: 'String'
+      default: 0
+    },
+    delay: {
+      type: [String, Number],
+      default: 0
     },
     fontColor: {
       type: String,
@@ -36,34 +40,84 @@ export default {
         let repTextArray = this.msg.split(/\r\n|\r|\n|<br>/g);
 
         for(let i = 0; i < repTextArray.length; i++) {
-          let dText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-          dText.innerHTML = repTextArray[i];
-          dText.setAttribute('x', 0);
-          dText.setAttribute('y', 0);
-          dText.setAttribute('font-size', this.fontSize);
-          dText.setAttribute('dominant-baseline', 'text-after-edge');
+          let sText = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
-          this.$el.appendChild(dText);
+
+          // sText.appendChild(tSpan);
+          // sText.setAttribute('x', 0);
+          // sText.setAttribute('y', 0);
+          // sText.setAttribute('font-size', this.fontSize);
+          // sText.setAttribute('dominant-baseline', 'text-after-edge');
+
+          // this.$el.appendChild(sText);
+
+          if(this.delay != 0) {
+            const splitTxtArray = repTextArray[i].split('');
+
+            for(let i = 0; i < splitTxtArray.length; i++) {
+              let tSpan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+              tSpan.innerHTML = splitTxtArray[i];
+              tSpan.style.setProperty('animation-delay', i*this.delay+'s');
+              tSpan.style.setProperty('fill', this.fontColor);
+              tSpan.style.setProperty('stroke', this.strokeColor);
+              sText.appendChild(tSpan);
+            }
+          }
+          else {
+            let tSpan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            tSpan.innerHTML = repTextArray[i];
+            tSpan.style.setProperty('fill', this.fontColor);
+            tSpan.style.setProperty('stroke', this.strokeColor);
+            sText.appendChild(tSpan);
+          }
+
+          sText.setAttribute('x', 0);
+          sText.setAttribute('y', 0);
+          sText.setAttribute('font-size', this.fontSize);
+          sText.setAttribute('dominant-baseline', 'text-after-edge');
+
+          this.$el.appendChild(sText);
         }
       }
 
       else {
-        let dText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        dText.innerHTML = this.msg;
-        dText.setAttribute('x', 0);
-        dText.setAttribute('y', 0);
-        dText.setAttribute('font-size', this.fontSize);
-        dText.setAttribute('dominant-baseline', 'text-after-edge');
+        let sText = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
-        this.$el.appendChild(dText);
+        if(this.delay != 0) {
+          const splitTxtArray = targetText.split('');
+
+          for(let i = 0; i < splitTxtArray.length; i++) {
+            let tSpan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            tSpan.innerHTML = splitTxtArray[i];
+            tSpan.style.setProperty('animation-delay', i*this.delay+'s');
+            tSpan.style.setProperty('fill', this.fontColor);
+            tSpan.style.setProperty('stroke', this.strokeColor);
+            sText.appendChild(tSpan);
+          }
+
+        }
+        else {
+          let tSpan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+          tSpan.innerHTML = targetText;
+          tSpan.style.setProperty('fill', this.fontColor);
+          tSpan.style.setProperty('stroke', this.strokeColor);
+          sText.appendChild(tSpan);
+        }
+
+        sText.setAttribute('x', 0);
+        sText.setAttribute('y', 0);
+        sText.setAttribute('font-size', this.fontSize);
+        sText.setAttribute('dominant-baseline', 'text-after-edge');
+
+        this.$el.appendChild(sText);
       }
     },
 
     setSize() {
       let $parent = this.$el;
-      const dText = $parent.querySelectorAll('text');
+      const sText = $parent.querySelectorAll('text');
 
-      Array.from(dText, (e, index) => {
+      Array.from(sText, (e, index) => {
         let num = index + 1;
         const bbox = e.getBBox();
 
@@ -94,16 +148,6 @@ export default {
     }
   },
 
-  computed: {
-    // バインドするスタイルを生成
-    styles () {
-      return {
-        '--fill': this.fontColor,
-        '--stroke': this.strokeColor
-      }
-    }
-  },
-
   mounted() {
     this.setText(this.msg);
 
@@ -119,42 +163,52 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
 
 
-svg {
-  stroke: transparent;
-  stroke-dasharray: 220;
-  stroke-width: 0.5px;
-  // stroke-opacity: 0;
-  fill: transparent;
+.svgAnimation {
+stroke: transparent;
+stroke-opacity: 0;
+
+  tspan {
+    stroke: transparent;
+    stroke-dasharray: 220;
+    stroke-width: 0.5px;
+    // stroke-opacity: 0;
+    fill: transparent;
+    fill-opacity: 0;
+  }
 
   text {
-    line-height: 1;
+    stroke: transparent;
+    stroke-opacity: 0;
+  }
+
+  &.start {
+    tspan {
+      stroke: var(--stroke);
+      fill: var(--fill);
+      fill-opacity: 0;
+      animation: lineAndFill 3000ms cubic-bezier(0.250, 0.460, 0.450, 0.940) 1 forwards;
+    }
   }
 }
 
-.start {
-  --stroke: #000;
-  stroke: var(--stroke);
-  --fill: #000;
-  fill: var(--fill);
-  // fill: transparent;
-  fill-opacity: 0;
-  animation: lineAndFill 3000ms cubic-bezier(0.250, 0.460, 0.450, 0.940) 1 forwards;
-}
+
 @keyframes lineAndFill {
   0% {
     stroke-dashoffset: 220;
+    stroke-opacity: 1;
   }
   90% {
     stroke-dashoffset: 0;
     fill: transparent;
     fill-opacity: 0;
-    // stroke-opacity: 1;
+    stroke-opacity: 1;
   }
   100% {
     fill-opacity: 1;
+    stroke-opacity: 1;
   }
 }
 </style>
