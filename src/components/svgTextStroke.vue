@@ -42,15 +42,6 @@ export default {
         for(let i = 0; i < repTextArray.length; i++) {
           let sText = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
-
-          // sText.appendChild(tSpan);
-          // sText.setAttribute('x', 0);
-          // sText.setAttribute('y', 0);
-          // sText.setAttribute('font-size', this.fontSize);
-          // sText.setAttribute('dominant-baseline', 'text-after-edge');
-
-          // this.$el.appendChild(sText);
-
           if(this.delay != 0) {
             const splitTxtArray = repTextArray[i].split('');
 
@@ -116,6 +107,7 @@ export default {
     setSize() {
       let $parent = this.$el;
       const sText = $parent.querySelectorAll('text');
+      let maxWidthArry = [];
 
       Array.from(sText, (e, index) => {
         let num = index + 1;
@@ -126,20 +118,18 @@ export default {
         }
 
         if(this.letterSpacing != 1) {
-          $parent.setAttribute('viewBox', '0 0 ' + (bbox.width * this.letterSpacing) + ' ' + bbox.height * num);
+          maxWidthArry.push(bbox.width * this.letterSpacing);
           e.setAttribute('textLength', bbox.width * this.letterSpacing);
-          $parent.setAttribute('width', bbox.width * this.letterSpacing);
         }
         else {
-          $parent.setAttribute('viewBox', '0 0 ' + bbox.width + ' ' + bbox.height * num);
-          $parent.setAttribute('width', bbox.width);
+          maxWidthArry.push(bbox.width);
         }
-
+        $parent.setAttribute('viewBox', '0 0 ' + Math.max(...maxWidthArry) + ' ' + bbox.height * num);
+        $parent.setAttribute('width', Math.max(...maxWidthArry));
         $parent.setAttribute('height', bbox.height * num);
 
         e.setAttribute('width', bbox.width);
         e.setAttribute('height', bbox.height);
-        // e.setAttribute('x', bbox.x);
         e.setAttribute('y', bbox.height * num);
         if(this.dy != 1) {
           e.setAttribute('dy', this.dy);
@@ -154,18 +144,12 @@ export default {
     setTimeout(() => {
       this.setSize();
     }, 500);
-
-    setTimeout(() => {
-      this.$el.classList.add('start');
-    }, 1000);
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style lang="scss">
-
-
 .svgAnimation {
 stroke: transparent;
 stroke-opacity: 0;

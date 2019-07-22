@@ -25,6 +25,14 @@ export default {
   name: 'app',
   components: {
     svgTextStroke
+  },
+  mounted() {
+    // classにstartを付与すると表示される。付与するタイミングは案件ごとに調整が必要
+    setTimeout(() => {
+      Array.from(document.querySelectorAll('.svgAnimation')).forEach((i)=>{
+        i.classList.add('start');
+      });
+    }, 1000);
   }
 }
 </script>
